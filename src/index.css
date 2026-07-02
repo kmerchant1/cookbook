@@ -1,0 +1,280 @@
+/* ============================================================================
+   cookbook — design tokens & global styles
+   Tokens mirror the design handoff (README "Design tokens"). Light values live
+   on :root; dark values override on [data-theme="dark"]. Everything themable is
+   a CSS custom property so the whole app flips with one attribute.
+   ========================================================================== */
+
+:root {
+  /* Surfaces & ink — light */
+  --bg-app: #faf6f0;
+  --surface: #ffffff;
+  --surface-inset: #efe7d9; /* segmented-control track */
+  --surface-frame-border: #ddd4c6;
+
+  --ink: #2b2723;
+  --ink-2: #8a8178;
+  --ink-3: #a89f92;
+  --ink-strong: #3c372f; /* slightly softer than ink for row text */
+
+  --hairline-card: #ebe3d5;
+  --hairline-header: #eee6d8;
+  --hairline-list: #f0e9dc;
+  --hairline-list-2: #f6f0e6;
+  --input-border: #e8e0d2;
+  --pill-border: #e0d8ca;
+
+  /* Primary — terracotta */
+  --primary: #c85a3c;
+  --primary-strong: #b0492e; /* mono quantities / chip text */
+  --primary-tint-bg: #f0dcd3;
+  --on-primary: #faf6f0;
+
+  /* Forest green */
+  --green: #3d5a3f;
+  --green-tint-bg: #dde6dd;
+  --green-tint-fg: #3d5a3f;
+  --sync-bg: #eef3ec;
+  --sync-fg: #3d5a3f;
+  --sync-meta: #6f8570;
+
+  /* Amber */
+  --amber: #e0a94e;
+  --amber-tint-bg: #f4e7cf;
+  --amber-tint-fg: #a9772a;
+
+  /* Neutral tint */
+  --neutral-tint-bg: #ece4d7;
+  --neutral-tint-fg: #8a8178;
+
+  /* Feedback */
+  --danger: #c0392b;
+  --error-surface: #fbeee9;
+  --error-border: #f0d4c9;
+  --error-icon-bg: #f5ddd3;
+  --error-text: #8a7d70;
+
+  /* Misc component tints */
+  --dashed-border: #d9cfbe;
+  --placeholder-fg: #bcb2a3;
+  --stepper-minus-bg: #f4ede0;
+  --card-title: #2b2723;
+  --muted-btn-bg: #efe7d9;
+  --muted-btn-fg: #8a8178;
+  --save-disabled: #c9c0b2;
+  --secondary-btn-fg: #5c5449;
+  --secondary-btn-border: #ddd3c4;
+  --meta-fg: #a0968a;
+  --drag-handle: #d3c9ba;
+  --checkbox-border: #ddd3c4;
+
+  /* Photo placeholder texture */
+  --photo-stripe: rgba(43, 39, 35, 0.05);
+  --photo-caption: rgba(43, 39, 35, 0.32);
+  --hero-stripe: rgba(43, 39, 35, 0.045);
+  --hero-caption: rgba(43, 39, 35, 0.28);
+
+  /* Elevation */
+  --shadow-frame: 0 30px 60px -20px rgba(60, 45, 35, 0.28), 0 8px 20px rgba(60, 45, 35, 0.07);
+  --shadow-primary: 0 8px 18px rgba(200, 90, 60, 0.3);
+  --shadow-primary-sm: 0 5px 13px rgba(200, 90, 60, 0.3);
+  --shadow-popover: 0 20px 44px rgba(40, 28, 18, 0.32);
+  --shadow-sheet: 0 -12px 40px rgba(40, 28, 18, 0.24);
+  --shadow-segment: 0 1px 3px rgba(60, 45, 35, 0.12);
+  --scrim: rgba(30, 22, 16, 0.4);
+  --scrim-light: rgba(30, 22, 16, 0.28);
+
+  /* Tab bar */
+  --tab-bg: #ffffff;
+  --tab-border: #ece5d9;
+  --tab-off: #a89f92;
+}
+
+[data-theme='dark'] {
+  --bg-app: #1b1916;
+  --surface: #26231f;
+  --surface-inset: #2f2a24;
+  --surface-frame-border: #2f2a24;
+
+  --ink: #f2ede4;
+  --ink-2: #a89e91;
+  --ink-3: #7d7468;
+  --ink-strong: #e6ded2;
+
+  --hairline-card: #332e28;
+  --hairline-header: #2a2620;
+  --hairline-list: #2a2620;
+  --hairline-list-2: #241f1a;
+  --input-border: #433d35;
+  --pill-border: #3a352e;
+
+  --primary: #d4674a;
+  --primary-strong: #e79274;
+  --primary-tint-bg: #3a2a24;
+  --on-primary: #1b1916;
+
+  --green: #6f9070;
+  --green-tint-bg: #29332a;
+  --green-tint-fg: #9db99e;
+  --sync-bg: #29332a;
+  --sync-fg: #9db99e;
+  --sync-meta: #7f9a80;
+
+  --amber: #e6b662;
+  --amber-tint-bg: #39301f;
+  --amber-tint-fg: #e6b662;
+
+  --neutral-tint-bg: #332e27;
+  --neutral-tint-fg: #a89e91;
+
+  --danger: #e0806f;
+  --error-surface: #2f2320;
+  --error-border: #4a352d;
+  --error-icon-bg: #3a2a24;
+  --error-text: #b6a99b;
+
+  --dashed-border: #433d35;
+  --placeholder-fg: #6f665b;
+  --stepper-minus-bg: #2f2a24;
+  --card-title: #f2ede4;
+  --muted-btn-bg: #2f2a24;
+  --muted-btn-fg: #a89e91;
+  --save-disabled: #5a5349;
+  --secondary-btn-fg: #cabfb0;
+  --secondary-btn-border: #3a352e;
+  --meta-fg: #8a7f72;
+  --drag-handle: #4a443c;
+  --checkbox-border: #433d35;
+
+  --photo-stripe: rgba(255, 255, 255, 0.035);
+  --photo-caption: rgba(255, 255, 255, 0.22);
+  --hero-stripe: rgba(255, 255, 255, 0.03);
+  --hero-caption: rgba(255, 255, 255, 0.2);
+
+  --shadow-frame: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.3);
+  --shadow-primary: 0 8px 18px rgba(212, 103, 74, 0.34);
+  --shadow-primary-sm: 0 5px 13px rgba(212, 103, 74, 0.34);
+  --scrim: rgba(0, 0, 0, 0.55);
+  --scrim-light: rgba(0, 0, 0, 0.45);
+
+  --tab-bg: #211e1a;
+  --tab-border: #332e28;
+  --tab-off: #7d7468;
+}
+
+/* ------------------------------------------------------------------ reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Figtree', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--ink);
+  background: var(--bg-app);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+input:focus,
+textarea:focus,
+button:focus-visible {
+  outline: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mono {
+  font-family: 'Space Mono', ui-monospace, monospace;
+}
+
+/* ------------------------------------------------------------- animations */
+@keyframes cb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cb-shimmer {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes cb-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(61, 90, 63, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(61, 90, 63, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(61, 90, 63, 0);
+  }
+}
+
+@keyframes cb-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes cb-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cb-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.spin {
+  animation: cb-spin 0.8s linear infinite;
+}
