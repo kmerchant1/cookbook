@@ -12,6 +12,7 @@ import {
   BookmarkIcon,
   ChevronLeft,
   ClockIcon,
+  CloseIcon,
   HeartIcon,
   PencilIcon,
   PotIcon,
@@ -108,6 +109,13 @@ export function RecipeDetailScreen() {
                   <span />
                   <span />
                 </span>
+              </button>
+              <button
+                className="circle-btn"
+                aria-label="Close to recipes"
+                onClick={() => navigate('/recipes')}
+              >
+                <CloseIcon size={19} />
               </button>
             </div>
           </div>

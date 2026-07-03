@@ -141,10 +141,14 @@ export function AddRecipeScreen() {
     }
     if (editingId) {
       dispatch({ type: 'UPDATE_RECIPE', id: editingId, input })
-      navigate(`/recipes/${editingId}`)
+      // Editing is always entered from the recipe's detail screen, so pop back
+      // to it (showing the saved changes) instead of pushing a new entry — that
+      // avoids the back button looping through the edit screen.
+      navigate(-1)
     } else {
       dispatch({ type: 'ADD_RECIPE', input })
-      navigate('/recipes')
+      // Replace the add screen in history so back doesn't return to the form.
+      navigate('/recipes', { replace: true })
     }
   }
 

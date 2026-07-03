@@ -14,6 +14,10 @@
 
 .frame {
   width: 100%;
+  /* Bound the frame to the viewport so the screen scrolls INTERNALLY and the
+     bottom bars (TabBar / action bar) stay pinned — instead of the whole page
+     growing with content. On ≥640px this is overridden with the mockup height. */
+  height: 100dvh;
   background: var(--bg-app);
   display: flex;
   flex-direction: column;
