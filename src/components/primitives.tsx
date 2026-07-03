@@ -2,6 +2,7 @@
 // checkboxes, the striped photo placeholder, and the hue picker. All hue-driven
 // colors come from CSS variables via `hue-*` classes so they flip with the theme.
 
+import { useEffect, useState } from 'react'
 import type { Hue, Tag } from '../types'
 import { darkPhotoTint } from '../lib/format'
 import { useApp } from '../state/AppContext'
@@ -73,23 +74,45 @@ export function PhotoPlaceholder({
   radius = 16,
   caption = 'PHOTO',
   hero = false,
+  src,
+  alt = '',
   children,
 }: {
   bg: string
   radius?: number
   caption?: string
   hero?: boolean
+  /** Optional recipe photo URL. Falls back to the striped placeholder if it fails to load. */
+  src?: string
+  alt?: string
   children?: React.ReactNode
 }) {
   const { resolvedTheme } = useApp()
+  const [failed, setFailed] = useState(false)
+  // Retry when the URL changes (e.g. editing the field, or switching recipes).
+  useEffect(() => setFailed(false), [src])
+
   const shownBg = resolvedTheme === 'dark' ? darkPhotoTint(bg) : bg
+  const showImage = Boolean(src) && !failed
   return (
     <div
       className={`photo ${hero ? 'photo-hero' : ''}`}
       style={{ background: shownBg, borderRadius: hero ? 0 : radius }}
     >
-      <div className="photo-stripe" />
-      <div className="photo-caption mono">{caption}</div>
+      {showImage ? (
+        <img
+          className="photo-img"
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <>
+          <div className="photo-stripe" />
+          <div className="photo-caption mono">{caption}</div>
+        </>
+      )}
       {children}
     </div>
   )

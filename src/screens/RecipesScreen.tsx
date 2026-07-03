@@ -127,7 +127,7 @@ export function RecipesScreen() {
                     className="recipe-card"
                     onClick={() => navigate(`/recipes/${r.id}`)}
                   >
-                    <PhotoPlaceholder bg={r.photoBg}>
+                    <PhotoPlaceholder bg={r.photoBg} src={r.heroImageUrl} alt={r.name}>
                       {r.favorite && (
                         <div className="fav-badge">
                           <HeartIcon size={15} filled />

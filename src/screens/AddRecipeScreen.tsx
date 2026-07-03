@@ -23,7 +23,7 @@ import {
   SpinnerIcon,
   WarningIcon,
 } from '../components/Icons'
-import { Chip, HuePicker, TagChip } from '../components/primitives'
+import { Chip, HuePicker, PhotoPlaceholder, TagChip } from '../components/primitives'
 
 type Method = 'paste' | 'link' | 'manual'
 type LinkStatus = 'idle' | 'loading' | 'error'
@@ -38,6 +38,7 @@ interface Draft {
   photoBg: string
   favorite: boolean
   sourceUrl?: string
+  heroImageUrl?: string
 }
 
 const toIng = (i: { quantity: string; name: string }): Ingredient => ({
@@ -55,6 +56,8 @@ function draftFromParsed(parsed: ParsedRecipe, base: Draft): Draft {
     time: parsed.time,
     ingredients: parsed.ingredients.map(toIng),
     steps: parsed.steps.map(toStep),
+    // A link import may carry the recipe photo; keep any existing one otherwise.
+    heroImageUrl: parsed.image || base.heroImageUrl,
   }
 }
 
@@ -102,6 +105,7 @@ export function AddRecipeScreen() {
           photoBg: editing.photoBg,
           favorite: editing.favorite,
           sourceUrl: editing.sourceUrl,
+          heroImageUrl: editing.heroImageUrl,
         }
       : emptyDraft,
   )
@@ -133,6 +137,7 @@ export function AddRecipeScreen() {
         .map((i) => ({ ...i, name: i.name.trim(), quantity: i.quantity.trim() })),
       steps: draft.steps.filter((s) => s.text.trim()).map((s) => ({ ...s, text: s.text.trim() })),
       sourceUrl: draft.sourceUrl,
+      heroImageUrl: draft.heroImageUrl?.trim() || undefined,
     }
     if (editingId) {
       dispatch({ type: 'UPDATE_RECIPE', id: editingId, input })
@@ -443,6 +448,7 @@ function ManualForm({
 }) {
   const setName = (name: string) => setDraft((d) => ({ ...d, name }))
   const setTime = (time: string) => setDraft((d) => ({ ...d, time }))
+  const setHeroImageUrl = (heroImageUrl: string) => setDraft((d) => ({ ...d, heroImageUrl }))
   const bumpServings = (delta: number) =>
     setDraft((d) => ({ ...d, servings: Math.max(1, d.servings + delta) }))
 
@@ -477,6 +483,32 @@ function ManualForm({
           value={draft.name}
           onChange={(e) => setName(e.target.value)}
         />
+      </div>
+
+      <div>
+        <div className="mono field-label" style={{ marginBottom: 8 }}>
+          PHOTO URL
+        </div>
+        <input
+          className="field"
+          placeholder="https://…/photo.jpg"
+          value={draft.heroImageUrl ?? ''}
+          inputMode="url"
+          autoCapitalize="off"
+          autoCorrect="off"
+          onChange={(e) => setHeroImageUrl(e.target.value)}
+        />
+        {draft.heroImageUrl?.trim() && (
+          <div className="img-preview">
+            <PhotoPlaceholder
+              bg={draft.photoBg}
+              src={draft.heroImageUrl.trim()}
+              radius={14}
+              caption="PREVIEW"
+              alt="Recipe photo preview"
+            />
+          </div>
+        )}
       </div>
 
       <div className="two-col">

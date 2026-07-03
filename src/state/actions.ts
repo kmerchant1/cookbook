@@ -14,6 +14,7 @@ export interface NewRecipeInput {
   ingredients: Ingredient[]
   steps: Step[]
   sourceUrl?: string
+  heroImageUrl?: string
 }
 
 export interface PushItem {

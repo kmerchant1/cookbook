@@ -15,6 +15,8 @@ export interface ParsedRecipe {
   time: string
   ingredients: ParsedIngredient[]
   steps: string[]
+  /** Recipe photo URL, when the source provides one (e.g. schema.org image). */
+  image?: string
 }
 
 const INGREDIENT_HEADINGS = /^(ingredients?|you(?:'| a)?ll need|shopping list)\b/i
@@ -137,6 +139,25 @@ function asArray<T>(v: T | T[] | undefined | null): T[] {
   return Array.isArray(v) ? v : [v]
 }
 
+/** schema.org `image` can be a URL string, an ImageObject, or an array of either. */
+export function extractImageUrl(image: unknown): string {
+  const first = asArray(image)[0]
+  if (typeof first === 'string') return normalizeImageUrl(first)
+  if (first && typeof first === 'object') {
+    const obj = first as Record<string, unknown>
+    const url = obj.url ?? obj['@id']
+    if (typeof url === 'string') return normalizeImageUrl(url)
+    if (Array.isArray(url) && typeof url[0] === 'string') return normalizeImageUrl(url[0])
+  }
+  return ''
+}
+
+function normalizeImageUrl(url: string): string {
+  const u = url.trim()
+  if (u.startsWith('//')) return `https:${u}`
+  return /^https?:\/\//i.test(u) ? u : ''
+}
+
 /** Normalize a schema.org Recipe node (already located) into ParsedRecipe. */
 export function normalizeJsonLd(node: Record<string, unknown>): ParsedRecipe {
   const name = typeof node.name === 'string' ? node.name.trim() : 'Untitled recipe'
@@ -183,6 +204,7 @@ export function normalizeJsonLd(node: Record<string, unknown>): ParsedRecipe {
     time,
     ingredients,
     steps: steps.filter(Boolean),
+    image: extractImageUrl(node.image) || undefined,
   }
 }
 

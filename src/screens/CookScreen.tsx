@@ -1,6 +1,7 @@
 // Screen 4a — Cook Today (select recipes). Pick one or more recipes; the action
 // bar combines their ingredients into a shopping list. (README §4)
 
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 import { darkPhotoTint } from '../lib/format'
@@ -44,9 +45,7 @@ export function CookScreen() {
                   className={`cook-row ${on ? 'cook-row-on' : ''}`}
                   onClick={() => dispatch({ type: 'TOGGLE_COOK_SELECT', id: r.id })}
                 >
-                  <div className="cook-thumb" style={{ background: tint(r.photoBg) }}>
-                    <div className="photo-stripe" />
-                  </div>
+                  <CookThumb bg={tint(r.photoBg)} src={r.heroImageUrl} />
                   <div className="spacer" style={{ textAlign: 'left' }}>
                     <div className="cook-row-title">{r.name}</div>
                     <div className="mono cook-row-meta">
@@ -80,6 +79,21 @@ export function CookScreen() {
         </div>
       )}
       <TabBar />
+    </div>
+  )
+}
+
+/** Small recipe thumbnail: loaded photo if present, else the striped tint. */
+function CookThumb({ bg, src }: { bg: string; src?: string }) {
+  const [failed, setFailed] = useState(false)
+  useEffect(() => setFailed(false), [src])
+  return (
+    <div className="cook-thumb" style={{ background: bg }}>
+      {src && !failed ? (
+        <img className="photo-img" src={src} alt="" loading="lazy" onError={() => setFailed(true)} />
+      ) : (
+        <div className="photo-stripe" />
+      )}
     </div>
   )
 }

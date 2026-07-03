@@ -39,6 +39,24 @@ function splitIngredient(line: string): { quantity: string; name: string } {
   return { quantity: '', name: text }
 }
 
+// schema.org `image` may be a URL string, an ImageObject, or an array of either.
+function extractImageUrl(image: unknown): string {
+  const first = asArray(image)[0]
+  const fromString = (u: string): string => {
+    const s = u.trim()
+    if (s.startsWith('//')) return `https:${s}`
+    return /^https?:\/\//i.test(s) ? s : ''
+  }
+  if (typeof first === 'string') return fromString(first)
+  if (first && typeof first === 'object') {
+    const obj = first as Record<string, unknown>
+    const url = obj.url ?? obj['@id']
+    if (typeof url === 'string') return fromString(url)
+    if (Array.isArray(url) && typeof url[0] === 'string') return fromString(url[0])
+  }
+  return ''
+}
+
 function findRecipeNode(data: unknown): Record<string, unknown> | null {
   const stack: unknown[] = [data]
   while (stack.length) {
@@ -91,7 +109,16 @@ function normalize(node: Record<string, unknown>) {
     isoDurationToDisplay(node.cookTime as string) ||
     isoDurationToDisplay(node.prepTime as string)
 
-  return { name, servings: Math.max(1, servings), time, ingredients, steps: steps.filter(Boolean) }
+  const image = extractImageUrl(node.image)
+
+  return {
+    name,
+    servings: Math.max(1, servings),
+    time,
+    ingredients,
+    steps: steps.filter(Boolean),
+    ...(image ? { image } : {}),
+  }
 }
 
 // Pull <script type="application/ld+json"> blocks out of raw HTML.

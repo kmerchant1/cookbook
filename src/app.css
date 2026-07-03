@@ -379,6 +379,23 @@
   position: relative;
   overflow: hidden;
 }
+/* Loaded recipe photo — fills the placeholder box, clipped by its radius. */
+.photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Live photo preview in the Add/Edit form. */
+.img-preview {
+  margin-top: 10px;
+}
+.img-preview .photo {
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--input-border);
+}
 .photo-stripe {
   position: absolute;
   inset: 0;

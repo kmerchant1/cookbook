@@ -78,7 +78,13 @@ export function RecipeDetailScreen() {
     <div className="screen">
       <div className="screen-scroll">
         <div className="hero">
-          <PhotoPlaceholder bg={recipe.photoBg} hero caption="HERO PHOTO" />
+          <PhotoPlaceholder
+            bg={recipe.photoBg}
+            hero
+            caption="HERO PHOTO"
+            src={recipe.heroImageUrl}
+            alt={recipe.name}
+          />
           <div className="hero-fade" />
           <div className="hero-nav">
             <button className="circle-btn" aria-label="Back" onClick={() => navigate(-1)}>
